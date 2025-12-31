@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026跨年祝福 - 愿你平安喜乐，闪闪发光</title>
+    <meta name="description" content="2026跨年祝福语网站 - 包含34个美好祝愿，祝福你事事顺意、快乐无忧、身体健康、出入平安、财源广进">
+    <meta name="keywords" content="2026跨年,新年祝福,祝福语,新年快乐,跨年倒计时,新年愿望,新年祝福语">
+    <meta name="author" content="Your Name">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph 标签（社交媒体分享优化） -->
+    <meta property="og:title" content="2026跨年祝福 - 愿你平安喜乐，闪闪发光">
+    <meta property="og:description" content="2026跨年祝福语网站 - 包含34个美好祝愿，祝福你事事顺意、快乐无忧、身体健康、出入平安、财源广进">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #countdown {
+            font-size: 12rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            color: #FFD700;
+            transition: all 0.3s ease;
+        }
+
+        .countdown-pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            50% { transform: scale(1.1); text-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+            100% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        #message {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            max-width: 80%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+
+        .show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        #toast-area {
+            position: relative;
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out 0.5s;
+        }
+
+        #toast-area.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .glass {
+            font-size: 6rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            user-select: none;
+        }
+
+        .glass:hover {
+            transform: scale(1.1);
+        }
+
+        .glass:active {
+            transform: scale(0.9);
+        }
+
+        #toast-animation {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out 0.5s;
+        }
+
+        .controls.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .year-display {
+            font-size: 6rem;
+            margin: 2rem 0;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .year-display.show {
+            opacity: 1;
+        }
+
+        /* 背景祝福文字 */
+        .background-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8rem;
+            font-weight: bold;
+            color: rgba(255, 215, 0, 0.1);
+            z-index: 1;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* 祝福语样式 */
+        .blessing {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1);
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        /* 入场动画 - 多种惊喜效果 */
+        .blessing-enter {
+            animation: surpriseScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes surpriseScale {
+            0% { 
+                transform: scale(0) rotate(180deg);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            100% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* 出场动画 - 出其不意 */
+        .blessing-exit {
+            animation: surpriseExit 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        @keyframes surpriseExit {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            30% {
+                transform: scale(1.1) rotate(10deg) translateY(-20px);
+                opacity: 0.8;
+            }
+            60% {
+                transform: scale(0.8) rotate(-20deg) translateY(30px) translateX(20px);
+                opacity: 0.5;
+            }
+            100% { 
+                transform: scale(0) rotate(360deg) translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* 音乐控制按钮 */
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .music-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            background: rgba(255, 215, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .music-btn.active {
+            background: rgba(255, 215, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown">10</div>
+    <div class="year-display" id="yearDisplay">2026!</div>
+    <div id="message">新年快乐！愿你平安喜乐，闪闪发光✨</div>
+    <div id="toast-area">
+        <div class="glass" id="glass1">🥂</div>
+        <div id="toast-animation" id="toastAnim">🥂</div>
+    </div>
+    <div class="controls">
+        <button id="toastBtn">点击碰杯</button>
+        <button id="restartBtn">重新开始</button>
+    </div>
+
+    <canvas id="fireworks"></canvas>
+
+    <!-- 音效 -->
+    <audio id="clinkSound" preload="auto">
+        <source src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg">
+    </audio>
+    <audio id="cheerSound" preload="auto">
+        <source src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg">
+    </audio>
+    
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop>
+        <source src="T:\Hbuilder\作业留存\2026祝福语\祝福你.mp4" type="audio/mpeg">
+    </audio>
+
+    <!-- 音乐控制按钮 -->
+    <div class="music-controls">
+        <button class="music-btn" id="musicPlayBtn">▶</button>
+        <button class="music-btn" id="musicPauseBtn">⏸</button>
+        <button class="music-btn" id="musicMuteBtn">🔊</button>
+    </div>
+
+    <script>
+        // 烟花粒子系统
+        class Fireworks {
+            constructor() {
+                this.canvas = document.getElementById('fireworks');
+                if (!this.canvas) {
+                    console.error('Canvas element not found');
+                    return;
+                }
+                
+                this.ctx = this.canvas.getContext('2d');
+                if (!this.ctx) {
+                    console.error('Canvas context not available');
+                    return;
+                }
+                
+                this.particles = [];
+                this.colors = ['#ff0055', '#00ccff', '#ffff00', '#ff6600', '#00ff99', '#ff00ff'];
+                
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                this.animate();
+            }
+
+            resizeCanvas() {
+                if (this.canvas) {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                }
+            }
+
+            createParticle(x, y, color) {
+                const particle = {
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    radius: Math.random() * 2 + 1,
+                    color: color,
+                    life: 100
+                };
+                this.particles.push(particle);
+            }
+
+            update() {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.1; // 重力
+                    p.life--;
+                    
+                    if (p.life <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+            }
+
+            draw() {
+                if (this.ctx) {
+                    this.ctx.fillStyle = 'rgba(15, 12, 41, 0.1)';
+                    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                    
+                    this.particles.forEach(p => {
+                        this.ctx.globalAlpha = p.life / 100;
+                        this.ctx.fillStyle = p.color;
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    });
+                    this.ctx.globalAlpha = 1;
+                }
+            }
+
+            launch(x, y) {
+                const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+                for (let i = 0; i < 50; i++) {
+                    this.createParticle(x || Math.random() * this.canvas.width, 
+                                      y || Math.random() * this.canvas.height * 0.3, 
+                                      color);
+                }
+            }
+
+            animate() {
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // 初始化烟花
+        const fireworks = new Fireworks();
+
+        // 获取DOM元素的函数
+        function getElement(id) {
+            return document.getElementById(id);
+        }
+
+        // 祝福语数组（34个）
+        const blessings = [
+            "事事顺意", "快乐无忧", "身体健康", "出入平安", "财源广进", 
+            "学业进步", "工作顺利", "爱情甜蜜", "家庭和睦", "福星高照",
+            "吉祥如意", "心想事成", "万事如意", "步步高升", "笑口常开",
+            "好运连连", "幸福美满", "青春永驻", "智慧如海", "友谊长存",
+            "平安喜乐", "前程似锦", "金玉满堂", "富贵满堂", "龙马精神",
+            "精神焕发", "财源滚滚", "日进斗金", "鸿运当头", "福寿安康",
+            "心想事成", "万事如意", "幸福美满", "健康长寿"
+        ];
+
+        // 检查重叠的函数
+        function isOverlapping(newRect, existingRects) {
+            for (let rect of existingRects) {
+                if (
+                    newRect.left < rect.right &&
+                    newRect.right > rect.left &&
+                    newRect.top < rect.bottom &&
+                    newRect.bottom > rect.top
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 创建背景文字
+        function createBackgroundText() {
+            const bgText = document.createElement('div');
+            bgText.className = 'background-text';
+            bgText.textContent = '我祝你今年会';
+            document.body.appendChild(bgText);
+        }
+
+        // 检查页面空间是否足够
+        function hasSpaceForBlessings() {
+            const totalBlessings = document.querySelectorAll('.blessing').length;
+            const availableArea = window.innerWidth * window.innerHeight;
+            const avgBlessingArea = 200 * 80; // 估算每个祝福语的平均面积
+            const maxBlessings = Math.floor(availableArea / avgBlessingArea * 0.7); // 70%的空间利用率
+            
+            return totalBlessings < maxBlessings && totalBlessings < 34; // 限制总数不超过34
+        }
+
+        // 显示随机祝福语组
+        function showRandomBlessings() {
+            // 清除现有的祝福语
+            document.querySelectorAll('.blessing').forEach(el => el.remove());
+            
+            // 移除2026和新年快乐文字
+            const yearDisplay = getElement('yearDisplay');
+            const message = getElement('message');
+            if (yearDisplay) yearDisplay.style.display = 'none';
+            if (message) message.style.display = 'none';
+            
+            // 创建背景文字
+            createBackgroundText();
+            
+            // 分3组显示祝福语（总共不超过34个）
+            const totalGroups = 3;
+            const itemsPerGroup = 11; // 每组11个祝福语 (11*3=33 < 34)
+            
+            for (let group = 0; group < totalGroups; group++) {
+                setTimeout(() => {
+                    const existingRects = []; // 存储当前组的已放置区域
+                    const currentGroup = []; // 存储当前组的祝福语元素
+                    
+                    for (let i = 0; i < itemsPerGroup; i++) {
+                        // 检查是否有空间继续生成
+                        if (!hasSpaceForBlessings()) {
+                            console.log('空间不足或已达到上限，停止生成祝福语');
+                            break;
+                        }
+                        
+                        setTimeout(() => {
+                            // 再次检查空间
+                            if (!hasSpaceForBlessings()) {
+                                return;
+                            }
+                            
+                            const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
+                            const blessingEl = document.createElement('div');
+                            blessingEl.className = 'blessing blessing-enter';
+                            blessingEl.textContent = randomBlessing;
+                            
+                            // 临时添加到DOM以获取尺寸
+                            document.body.appendChild(blessingEl);
+                            
+                            // 尝试找到不重叠的位置
+                            let attempts = 0;
+                            let positionFound = false;
+                            
+                            while (attempts < 50 && !positionFound) {
+                                // 随机位置，考虑元素尺寸
+                                const maxX = window.innerWidth - blessingEl.offsetWidth;
+                                const maxY = window.innerHeight - blessingEl.offsetHeight;
+                                const posX = Math.floor(Math.random() * maxX);
+                                const posY = Math.floor(Math.random() * maxY);
+                                
+                                // 设置位置
+                                blessingEl.style.left = `${posX}px`;
+                                blessingEl.style.top = `${posY}px`;
+                                
+                                // 获取元素矩形
+                                const rect = {
+                                    left: posX,
+                                    top: posY,
+                                    right: posX + blessingEl.offsetWidth,
+                                    bottom: posY + blessingEl.offsetHeight
+                                };
+                                
+                                // 检查是否与现有元素重叠
+                                if (!isOverlapping(rect, existingRects)) {
+                                    existingRects.push(rect);
+                                    positionFound = true;
+                                }
+                                
+                                attempts++;
+                            }
+                            
+                            // 如果无法找到不重叠的位置，使用随机位置
+                            if (!positionFound) {
+                                const maxX = window.innerWidth - blessingEl.offsetWidth;
+                                const maxY = window.innerHeight - blessingEl.offsetHeight;
+                                const posX = Math.floor(Math.random() * maxX);
+                                const posY = Math.floor(Math.random() * maxY);
+                                
+                                blessingEl.style.left = `${posX}px`;
+                                blessingEl.style.top = `${posY}px`;
+                                
+                                existingRects.push({
+                                    left: posX,
+                                    top: posY,
+                                    right: posX + blessingEl.offsetWidth,
+                                    bottom: posY + blessingEl.offsetHeight
+                                });
+                            }
+                            
+                            // 随机颜色
+                            const colors = [
+                                '#FFD700', '#FF69B4', '#00FFFF', '#FF6347', 
+                                '#7CFC00', '#9370DB', '#FFA500', '#FF1493', 
+                                '#00FA9A', '#8A2BE2', '#FF4500', '#ADFF2F'
+                            ];
+                            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                            blessingEl.style.color = randomColor;
+                            blessingEl.style.textShadow = `0 0 15px ${randomColor}80`;
+                            
+                            // 随机旋转角度
+                            const randomRotation = Math.floor(Math.random() * 20) - 10; // -10到10度
+                            blessingEl.style.transform = `rotate(${randomRotation}deg)`;
+                            
+                            // 如果位置被强制设置，重新添加到DOM
+                            if (blessingEl.parentNode) {
+                                // 保持在DOM中
+                            } else {
+                                document.body.appendChild(blessingEl);
+                            }
+                            
+                            // 添加到当前组
+                            currentGroup.push(blessingEl);
+                            
+                            // 35秒后开始淡出
+                            setTimeout(() => {
+                                blessingEl.classList.remove('blessing-enter');
+                                blessingEl.classList.add('blessing-exit');
+                                
+                                // 1秒后移除元素
+                                setTimeout(() => {
+                                    if (blessingEl.parentNode) {
+                                        blessingEl.parentNode.removeChild(blessingEl);
+                                    }
+                                }, 1000);
+                                
+                                // 检查是否是当前组最后一个元素
+                                if (currentGroup.every(el => !el.parentNode)) {
+                                    // 当前组全部消失后，等待2秒补充下一组
+                                    if (group < totalGroups - 1) {
+                                        setTimeout(() => {
+                                            showNextGroup(group + 1, itemsPerGroup);
+                                        }, 2000);
+                                    }
+                                }
+                            }, 35000); // 35秒停留
+                            
+                            // 添加移动动画（无碰撞）
+                            startMovingAnimation(blessingEl);
+                        }, i * 150); // 组内错开显示时间
+                    }
+                }, group === 0 ? 0 : 2000); // 第一组立即显示，后续组间隔2秒
+            }
+        }
+
+        // 移动动画函数（无碰撞检测）
+        function startMovingAnimation(blessingEl) {
+            let vx = (Math.random() - 0.5) * 2; // 水平速度
+            let vy = (Math.random() - 0.5) * 2; // 垂直速度
+            
+            // 移动函数
+            function move() {
+                if (!blessingEl.parentNode) return; // 如果元素已移除则停止
+                
+                // 获取当前位置
+                let x = parseFloat(blessingEl.style.left) || 0;
+                let y = parseFloat(blessingEl.style.top) || 0;
+                
+                // 更新位置
+                x += vx;
+                y += vy;
+                
+                // 边界检测 - 反弹
+                const maxX = window.innerWidth - blessingEl.offsetWidth;
+                const maxY = window.innerHeight - blessingEl.offsetHeight;
+                
+                if (x <= 0) {
+                    x = 0;
+                    vx = -vx * 0.8; // 反弹并减少速度
+                } else if (x >= maxX) {
+                    x = maxX;
+                    vx = -vx * 0.8;
+                }
+                
+                if (y <= 0) {
+                    y = 0;
+                    vy = -vy * 0.8;
+                } else if (y >= maxY) {
+                    y = maxY;
+                    vy = -vy * 0.8;
+                }
+                
+                // 设置新位置
+                blessingEl.style.left = `${x}px`;
+                blessingEl.style.top = `${y}px`;
+                
+                // 继续动画
+                requestAnimationFrame(move);
+            }
+            
+            // 开始移动
+            move();
+        }
+
+        // 显示下一组祝福语
+        function showNextGroup(groupIndex, itemsPerGroup) {
+            const existingRects = []; // 存储当前组的已放置区域
+            const currentGroup = []; // 存储当前组的祝福语元素
+            
+            for (let i = 0; i < itemsPerGroup; i++) {
+                // 检查是否有空间继续生成
+                if (!hasSpaceForBlessings()) {
+                    console.log('空间不足或已达到上限，停止生成祝福语');
+                    break;
+                }
+                
+                setTimeout(() => {
+                    // 再次检查空间
+                    if (!hasSpaceForBlessings()) {
+                        return;
+                    }
+                    
+                    const randomBlessing = blessings[Math.floor(Math.random() * blessings.length)];
+                    const blessingEl = document.createElement('div');
+                    blessingEl.className = 'blessing blessing-enter';
+                    blessingEl.textContent = randomBlessing;
+                    
+                    // 临时添加到DOM以获取尺寸
+                    document.body.appendChild(blessingEl);
+                    
+                    // 尝试找到不重叠的位置
+                    let attempts = 0;
+                    let positionFound = false;
+                    
+                    while (attempts < 50 && !positionFound) {
+                        // 随机位置，考虑元素尺寸
+                        const maxX = window.innerWidth - blessingEl.offsetWidth;
+                        const maxY = window.innerHeight - blessingEl.offsetHeight;
+                        const posX = Math.floor(Math.random() * maxX);
+                        const posY = Math.floor(Math.random() * maxY);
+                        
+                        // 设置位置
+                        blessingEl.style.left = `${posX}px`;
+                        blessingEl.style.top = `${posY}px`;
+                        
+                        // 获取元素矩形
+                        const rect = {
+                            left: posX,
+                            top: posY,
+                            right: posX + blessingEl.offsetWidth,
+                            bottom: posY + blessingEl.offsetHeight
+                        };
+                        
+                        // 检查是否与现有元素重叠
+                        if (!isOverlapping(rect, existingRects)) {
+                            existingRects.push(rect);
+                            positionFound = true;
+                        }
+                        
+                        attempts++;
+                    }
+                    
+                    // 如果无法找到不重叠的位置，使用随机位置
+                    if (!positionFound) {
+                        const maxX = window.innerWidth - blessingEl.offsetWidth;
+                        const maxY = window.innerHeight - blessingEl.offsetHeight;
+                        const posX = Math.floor(Math.random() * maxX);
+                        const posY = Math.floor(Math.random() * maxY);
+                        
+                        blessingEl.style.left = `${posX}px`;
+                        blessingEl.style.top = `${posY}px`;
+                        
+                        existingRects.push({
+                            left: posX,
+                            top: posY,
+                            right: posX + blessingEl.offsetWidth,
+                            bottom: posY + blessingEl.offsetHeight
+                        });
+                    }
+                    
+                    // 随机颜色
+                    const colors = [
+                        '#FFD700', '#FF69B4', '#00FFFF', '#FF6347', 
+                        '#7CFC00', '#9370DB', '#FFA500', '#FF1493', 
+                        '#00FA9A', '#8A2BE2', '#FF4500', '#ADFF2F'
+                    ];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    blessingEl.style.color = randomColor;
+                    blessingEl.style.textShadow = `0 0 15px ${randomColor}80`;
+                    
+                    // 随机旋转角度
+                    const randomRotation = Math.floor(Math.random() * 20) - 10; // -10到10度
+                    blessingEl.style.transform = `rotate(${randomRotation}deg)`;
+                    
+                    // 如果位置被强制设置，重新添加到DOM
+                    if (blessingEl.parentNode) {
+                        // 保持在DOM中
+                    } else {
+                        document.body.appendChild(blessingEl);
+                    }
+                    
+                    // 添加到当前组
+                    currentGroup.push(blessingEl);
+                    
+                    // 35秒后开始淡出
+                    setTimeout(() => {
+                        blessingEl.classList.remove('blessing-enter');
+                        blessingEl.classList.add('blessing-exit');
+                        
+                        // 1秒后移除元素
+                        setTimeout(() => {
+                            if (blessingEl.parentNode) {
+                                blessingEl.parentNode.removeChild(blessingEl);
+                            }
+                        }, 1000);
+                        
+                        // 检查是否是当前组最后一个元素
+                        if (currentGroup.every(el => !el.parentNode)) {
+                            // 当前组全部消失后，等待2秒补充下一组
+                            if (groupIndex < 2) { // 只有前2组需要补充下一组
+                                setTimeout(() => {
+                                    showNextGroup(groupIndex + 1, itemsPerGroup);
+                                }, 2000);
+                            }
+                        }
+                    }, 35000); // 35秒停留
+                    
+                    // 添加移动动画（无碰撞）
+                    startMovingAnimation(blessingEl);
+                }, i * 150); // 组内错开显示时间
+            }
+        }
+
+        // 倒计时功能
+        function startCountdown() {
+            const countdownEl = getElement('countdown');
+            const yearDisplay = getElement('yearDisplay');
+            const messageEl = getElement('message');
+            const toastArea = getElement('toast-area');
+            const controls = getElement('controls');
+            
+            if (!countdownEl) return;
+            
+            let count = 10;
+            countdownEl.textContent = count;
+            countdownEl.classList.remove('countdown-pulse');
+            void countdownEl.offsetWidth; // 触发重排
+            countdownEl.classList.add('countdown-pulse');
+            
+            // 确保交互元素在倒计时期间隐藏
+            if (toastArea) toastArea.classList.remove('show');
+            if (controls) controls.classList.remove('show');
+
+            const timer = setInterval(() => {
+                count--;
+                
+                if (count > 0) {
+                    countdownEl.textContent = count;
+                    countdownEl.classList.remove('countdown-pulse');
+                    void countdownEl.offsetWidth; // 触发重排
+                    countdownEl.classList.add('countdown-pulse');
+                } else {
+                    clearInterval(timer);
+                    countdownEl.style.display = 'none';
+                    
+                    if (yearDisplay) {
+                        yearDisplay.classList.add('show');
+                    }
+                    
+                    // 播放庆祝音效
+                    setTimeout(() => {
+                        const cheerSound = getElement('cheerSound');
+                        if (cheerSound) {
+                            cheerSound.currentTime = 0;
+                            cheerSound.play().catch(e => console.log('Audio play error:', e));
+                        }
+                    }, 500);
+                    
+                    // 显示祝福信息和交互元素
+                    setTimeout(() => {
+                        if (messageEl) {
+                            messageEl.classList.add('show');
+                        }
+                        if (toastArea) {
+                            toastArea.classList.add('show');
+                        }
+                        if (controls) {
+                            controls.classList.add('show');
+                        }
+                        
+                        // 开始自动发射烟花
+                        autoLaunchFireworks();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // 自动发射烟花
+        function autoLaunchFireworks() {
+            setInterval(() => {
+                const yearDisplay = getElement('yearDisplay');
+                if (yearDisplay && yearDisplay.classList.contains('show')) {
+                    if (fireworks && typeof fireworks.launch === 'function') {
+                        fireworks.launch();
+                    }
+                }
+            }, 800);
+        }
+
+        // 碰杯动画
+        function showToast() {
+            const toastAnim = getElement('toastAnim');
+            if (toastAnim) {
+                toastAnim.textContent = '🥂';
+                toastAnim.style.opacity = '1';
+                toastAnim.style.top = '-50px';
+                
+                // 动画
+                let pos = -50;
+                const moveAnim = setInterval(() => {
+                    pos += 5;
+                    toastAnim.style.top = pos + 'px';
+                    toastAnim.style.opacity = (1 - pos / 200);
+                    
+                    if (pos > 100) {
+                        clearInterval(moveAnim);
+                        toastAnim.style.opacity = '0';
+                    }
+                }, 30);
+            }
+            
+            // 播放碰杯音效
+            const clinkSound = getElement('clinkSound');
+            if (clinkSound) {
+                clinkSound.currentTime = 0;
+                clinkSound.play().catch(e => console.log('Audio play error:', e));
+            }
+            
+            // 显示随机祝福语
+            showRandomBlessings();
+        }
+
+        // 音乐控制功能
+        function initMusicControls() {
+            const bgMusic = getElement('bgMusic');
+            const musicPlayBtn = getElement('musicPlayBtn');
+            const musicPauseBtn = getElement('musicPauseBtn');
+            const musicMuteBtn = getElement('musicMuteBtn');
+            
+            if (!bgMusic) return;
+            
+            // 播放音乐
+            if (musicPlayBtn) {
+                musicPlayBtn.addEventListener('click', () => {
+                    bgMusic.play().catch(e => console.log('Play error:', e));
+                    musicPlayBtn.classList.add('active');
+                    musicPauseBtn.classList.remove('active');
+                });
+            }
+            
+            // 暂停音乐
+            if (musicPauseBtn) {
+                musicPauseBtn.addEventListener('click', () => {
+                    bgMusic.pause();
+                    musicPauseBtn.classList.add('active');
+                    musicPlayBtn.classList.remove('active');
+                });
+            }
+            
+            // 静音切换
+            if (musicMuteBtn) {
+                let muted = false;
+                musicMuteBtn.addEventListener('click', () => {
+                    muted = !muted;
+                    bgMusic.muted = muted;
+                    musicMuteBtn.textContent = muted ? '🔇' : '🔊';
+                });
+            }
+            
+            // 音乐结束时自动播放
+            bgMusic.addEventListener('ended', () => {
+                bgMusic.currentTime = 0;
+                bgMusic.play().catch(e => console.log('Play error:', e));
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            // 开始倒计时
+            startCountdown();
+
+            // 初始化音乐控制
+            initMusicControls();
+
+            // 碰杯按钮事件（事件委托，确保元素存在时再绑定）
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'toastBtn' || e.target.classList.contains('glass')) {
+                    showToast();
+                }
+                
+                if (e.target.id === 'restartBtn') {
+                    const countdownEl = getElement('countdown');
+                    const yearDisplay = getElement('yearDisplay');
+                    const messageEl = getElement('message');
+                    const toastArea = getElement('toast-area');
+                    const controls = getElement('controls');
+                    
+                    // 移除背景文字和所有祝福语
+                    document.querySelectorAll('.background-text, .blessing').forEach(el => el.remove());
+                    
+                    if (countdownEl) {
+                        countdownEl.style.display = 'block';
+                        countdownEl.textContent = '10';
+                        countdownEl.classList.remove('countdown-pulse');
+                        void countdownEl.offsetWidth; // 触发重排
+                        countdownEl.classList.add('countdown-pulse');
+                    }
+                    if (yearDisplay) yearDisplay.classList.remove('show');
+                    if (messageEl) messageEl.classList.remove('show');
+                    if (toastArea) toastArea.classList.remove('show');
+                    if (controls) controls.classList.remove('show');
+                    startCountdown();
+                }
+            });
+
+            // 防止音频自动播放被阻止
+            document.body.addEventListener('click', function() {
+                const clinkSound = getElement('clinkSound');
+                const cheerSound = getElement('cheerSound');
+                const bgMusic = getElement('bgMusic');
+                
+                [clinkSound, cheerSound, bgMusic].forEach(audio => {
+                    if (audio) {
+                        audio.play().then(() => audio.pause()).catch(e => console.log('Auto play prevented:', e));
+                    }
+                });
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>
+
+
